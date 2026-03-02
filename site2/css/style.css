@@ -1,0 +1,474 @@
+/* ====== Підключення шрифту e-ukraine ====== */
+@font-face {
+    font-family: 'e-ukraine';
+    src: url('../fonts/e-Ukraine-Thin.otf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'e-ukraine';
+    src: url('../fonts/e-Ukraine-UltraLight.otf') format('opentype');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'e-ukraine';
+    src: url('../fonts/e-Ukraine-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'e-ukraine';
+    src: url('../fonts/e-Ukraine-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'e-ukraine';
+    src: url('../fonts/e-Ukraine-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'e-ukraine';
+    src: url('../fonts/e-Ukraine-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'e-ukraine', sans-serif;
+    background: #000000;
+    color: #FFFFFF;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    overflow: hidden;
+}
+
+.header {
+    background: #1B1B1B;
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-radius: 24px;
+    margin: 24px 16px 16px 16px;
+    color: #FFFFFF;
+    flex-shrink: 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo img {
+    display: block;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.title {
+    font-weight: 700;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    padding: 0 16px 16px 16px;
+    gap: 16px;
+    background: #000000;
+}
+
+#map {
+    flex: 1;
+    height: 100%;
+    background: #1a1a1a;
+    border-radius: 24px;
+    border: 2px solid #000000;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.sidebar {
+    width: 440px;
+    background: #1B1B1B;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 1.5rem;
+    gap: 0.75rem;
+    flex-shrink: 0;
+    color: #FFFFFF;
+    border: 2px solid #000000;
+    scrollbar-width: thin;
+    scrollbar-color: #333333 #1B1B1B;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+.sidebar::-webkit-scrollbar-track {
+    background: #1B1B1B;
+}
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #333333;
+    border-radius: 4px;
+}
+
+.section-title {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #FFFFFF;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.text-muted {
+    color: #767676;
+    font-size: 0.85rem;
+    font-weight: 300;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    background: #000000;
+    border: 2px solid #000000;
+    border-radius: 40px;
+    font-size: 0.9rem;
+    color: #FFFFFF;
+    transition: border 0.2s;
+    font-weight: 400;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #FFFFFF;
+}
+
+.btn {
+    background: #000000;
+    border: 1px solid #1a1a1a;
+    border-radius: 40px;
+    color: #FFFFFF;
+    padding: 0.7rem 1rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-align: center;
+    white-space: nowrap;
+    line-height: 1.2;
+    border: none;
+}
+
+.btn:hover {
+    background: #FFFFFF;
+    color: #000000;
+}
+
+.btn.btn-primary {
+    background: #FFFFFF;
+    color: #000000;
+}
+
+.btn.btn-primary:hover {
+    background: #000000;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+}
+
+.btn.small {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    flex: 1;
+}
+
+.search-container {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-container .input-field {
+    flex: 1;
+}
+
+.coordinates-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.stats {
+    background: #000000;
+    border-radius: 24px;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #FFFFFF;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    color: #767676;
+    font-weight: 300;
+}
+
+.stat-row span:last-child {
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+.monuments-list {
+    background: #000;
+    border-radius: 24px;
+    padding: 0.8rem;
+    max-height: 500px;
+    min-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.monument-item {
+    background: #1B1B1B;
+    border-radius: 16px;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    word-break: break-word;
+}
+
+.monument-item:hover {
+    background: #333;
+}
+
+.monument-item strong {
+    display: block;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+}
+
+.monument-item span {
+    color: #aaa;
+    font-size: 0.85rem;
+    display: block;
+    line-height: 1.5;
+    margin-top: 0.2rem;
+}
+
+.export-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.export-buttons .btn {
+    flex: 1;
+    min-width: 0;
+}
+
+.footer-links {
+    font-size: 0.8rem;
+    color: #767676;
+    text-align: center;
+    margin-top: 0.5rem;
+    border-top: 1px solid #333;
+    padding-top: 0.5rem;
+    font-weight: 300;
+}
+
+.footer-signature {
+    font-size: 0.8rem;
+    color: #767676;
+    text-align: center;
+    margin-top: 0.2rem;
+    font-weight: 300;
+}
+
+/* ====== Стилі для карти ====== */
+.custom-marker {
+    background: transparent;
+    border: none;
+}
+
+.custom-marker div {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.national-marker {
+    background: transparent;
+    border: none;
+}
+
+.national-marker div {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    border: 3px solid;
+    border-color: #0057b7 #ffd700 #0057b7 #ffd700;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.custom-cluster-icon div {
+    font-weight: bold;
+    color: #000;
+}
+
+.custom-popup-style {
+    background: #ffffff !important;
+    border-radius: 16px;
+    padding: 1rem;
+    color: #000000;
+    font-family: 'e-ukraine', sans-serif;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border: none;
+}
+
+.custom-popup-style .leaflet-popup-content {
+    margin: 0;
+    width: 100% !important;
+    background: #ffffff !important;
+}
+
+.custom-popup-style .leaflet-popup-tip {
+    background: #ffffff !important;
+}
+
+.custom-popup-style * {
+    background: #ffffff !important;
+    color: #000000;
+    border: none;
+}
+
+.custom-popup b {
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.custom-popup span {
+    color: #333 !important;
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.popup-address {
+    color: #555 !important;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.3rem;
+}
+
+.popup-extract {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #222 !important;
+    margin-top: 0.8rem;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.popup-extract::-webkit-scrollbar {
+    width: 6px;
+}
+.popup-extract::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+.popup-extract::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 3px;
+}
+
+.monument-outline {
+    fill: rgba(255, 255, 0, 0.1);
+    stroke: #FFD700;
+    stroke-width: 3;
+    stroke-dasharray: 5, 5;
+}
+
+.custom-scale-bar {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: #000000;
+    color: #FFFFFF;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 300;
+    border: 1px solid #FFFFFF;
+    z-index: 1000;
+    pointer-events: none;
+    white-space: nowrap;
+    min-width: 40px;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.error-toast {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000000;
+    color: #FFFFFF;
+    padding: 12px 20px;
+    border-radius: 24px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(255,255,255,0.2);
+    font-weight: 500;
+    font-size: 0.9rem;
+    max-width: 300px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.error-toast.show {
+    opacity: 1;
+}
