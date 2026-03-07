@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConTour · хаб</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'e-ukraine', 'Helvetica', sans-serif;
+            /* Глибокий темний фон з легким радіальним градієнтом, як на фото */
+            background: radial-gradient(circle at top left, #232429 0%, #151619 100%);
+            color: #E8E8E8;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #hub-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.5s ease;
+        }
+
+        #animation-area {
+            text-align: center;
+            opacity: 0;
+            animation: fadeInLogo 1s ease forwards;
+        }
+
+        @keyframes fadeInLogo {
+            to { opacity: 1; }
+        }
+
+        #hub-logo {
+            width: 150px; /* Трохи зменшив для елегантності */
+            height: 150px;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+        }
+
+        #hub-title {
+            width: auto;
+            display: flex;
+            justify-content: center;
+            gap: 2px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0 auto;
+            letter-spacing: 1px;
+        }
+
+        .letter {
+            display: inline-block;
+            transition: color 1s;
+        }
+
+        /* Кнопки вибору сайту – вертикальний стовпчик */
+        #button-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: fadeInButtons 0.8s ease forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeInButtons {
+            to { opacity: 1; }
+        }
+
+        .site-button {
+            /* Стиль плашок з інтерфейсу (напівпрозорі, з рамкою) */
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            width: 420px;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 500;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Ефект наведення (світіння як на активних табах в референсі) */
+        .site-button:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(138, 180, 248, 0.6);
+            box-shadow: 0 0 20px rgba(138, 180, 248, 0.15), inset 0 0 10px rgba(138, 180, 248, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .button-content {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            gap: 20px;
+        }
+
+        .button-logo {
+            width: 50px;
+            height: 50px;
+            filter: invert(0.9); /* М'якший білий */
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .site-button:hover .button-logo {
+            /* Замість повної інверсії додаємо легке світіння іконки */
+            filter: invert(1) drop-shadow(0 0 5px rgba(138, 180, 248, 0.5));
+        }
+
+        .button-text {
+            text-align: left;
+        }
+
+        .button-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: 0.5px;
+        }
+
+        .button-desc {
+            font-size: 0.95rem;
+            color: #8A8B91;
+            margin-top: 0.4rem;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .site-button:hover .button-desc {
+            color: #D1D2D6;
+        }
+
+        /* Контейнер для iframe */
+        #iframe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #151619;
+            display: none;
+        }
+
+        #iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Кнопка Tools (як кнопка "Створити" на референсі) */
+        #tools-button {
+            position: absolute;
+            top: 36px;
+            right: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #E8E8E8;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 0.6rem 1.8rem;
+            font-size: 0.95rem;
+            cursor: pointer;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #tools-button:hover {
+            background: rgba(138, 180, 248, 0.1);
+            border-color: rgba(138, 180, 248, 0.5);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(138, 180, 248, 0.2);
+        }
+
+        /* Кнопка підтримки (кава) */
+        #support-button {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            color: #E8E8E8;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #support-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        #support-button img {
+            width: 20px;
+            height: 20px;
+            filter: invert(0.9);
+            transition: filter 0.3s ease;
+        }
+
+        /* Модальне вікно підтримки */
+        #support-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 16, 20, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .modal-content {
+            background: #202126;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 2.5rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .modal-content p {
+            color: #8A8B91;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .support-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .support-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .support-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .support-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            opacity: 0.8;
+        }
+
+        .support-item:hover img {
+            opacity: 1;
+        }
+
+        .support-item .info {
+            text-align: left;
+            flex: 1;
+        }
+
+        .support-item .label {
+            font-size: 0.85rem;
+            color: #8A8B91;
+            margin-bottom: 0.2rem;
+        }
+
+        .support-item .value {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #E8E8E8;
+            word-break: break-all;
+        }
+
+        .copy-notification {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(138, 180, 248, 0.15);
+            border: 1px solid rgba(138, 180, 248, 0.3);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            z-index: 10001;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .copy-notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .close-modal {
+            margin-top: 2rem;
+            padding: 0.8rem 2.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            color: #E8E8E8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="hub-container">
+        <div id="animation-area">
+            <img src="images/icon-build.svg" id="hub-logo" alt="ConTour">
+            <div id="hub-title">
+                <span class="letter">C</span>
+                <span class="letter">o</span>
+                <span class="letter">n</span>
+                <span class="letter">T</span>
+                <span class="letter">o</span>
+                <span class="letter">u</span>
+                <span class="letter">r</span>
+            </div>
+        </div>
+
+        <div id="button-area" style="display: none;">
+            <button class="site-button" id="btn-site1">
+                <div class="button-content">
+                    <img src="images/icon-logo.svg" class="button-logo" alt="">
+                    <div class="button-text">
+                        <div class="button-title">ConTour</div>
+                        <div class="button-desc">топологічні лінії</div>
+                    </div>
+                </div>
+            </button>
+            <button class="site-button" id="btn-site2">
+                <div class="button-content">
+                    <img src="images/icon-logo2.svg" class="button-logo" alt="">
+                    <div class="button-text">
+                        <div class="button-title">ArcHist</div>
+                        <div class="button-desc">архітектурні пам'ятки</div>
+                    </div>
+                </div>
+            </button>
+            <button class="site-button" id="btn-site3">
+                <div class="button-content">
+                    <img src="images/icon-logo3.svg" class="button-logo" alt="">
+                    <div class="button-text">
+                        <div class="button-title">CoLir</div>
+                        <div class="button-desc">палітри кольорів</div>
+                    </div>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <div id="iframe-container">
+        <iframe id="site-frame" src=""></iframe>
+        <button id="tools-button">Tools</button>
+    </div>
+
+    <button id="support-button">
+        <img src="images/icon-coffee.svg" alt="coffee" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\' fill=\'white\'><path d=\'M18 8H20C21 8 22 9 22 10V14C22 15 21 16 20 16H18M18 8V16M18 8H5C4 8 3 9 3 10V14C3 16 5 18 8 18H13C16 18 18 16 18 14V8Z\' stroke=\'white\' fill=\'white\'/></svg>'">
+
+    </button>
+
+    <div id="support-modal">
+        <div class="modal-content">
+            <h2>Підтримка автора</h2>
+            <p>Оберіть зручний спосіб</p>
+            
+            <div class="support-options">
+                <div class="support-item" data-copy="5168 7451 9371 2855">
+                    <img src="images/icon-bank.svg" alt="bank" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'10\' height=\'10\' viewBox=\'0 0 10 10\' fill=\'white\'><path d=\'M4 10h16v8H4z\'/><path d=\'M12 2L2 7v2h20V7l-10-5z\'/></svg>'">
+                    <div class="info">
+                        <div class="label">PrivatBank</div>
+                        <div class="value">5168 7451 9371 2855</div>
+                    </div>
+                </div>
+
+                <div class="support-item" data-copy="0x60349ABb35210051d88b3CF956bF545D47AA9B11">
+                    <img src="images/icon-crypto.svg" alt="crypto" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'20\' height=\'20\' viewBox=\'0 0 10 10\' fill=\'white\'><circle cx=\'8\' cy=\'8\' r=\'8\' fill=\'none\' stroke=\'white\' stroke-width=\'2\'/><path d=\'M8 12h8M12 8v8\' stroke=\'white\' stroke-width=\'2\'/></svg>'">
+                    <div class="info">
+                        <div class="label">Крипто гаманець (ERC-20)(ETH)</div>
+                        <div class="value">0x60349ABb35210051d88b3CF956bF545D47AA9B11</div>
+                    </div>
+                </div>
+
+                <div class="support-item">
+                    <img src="images/icon-author.svg" alt="author" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'50\' viewBox=\'0 0 24 24\' fill=\'white\'><circle cx=\'12\' cy=\'8\' r=\'4\' fill=\'white\'/><path d=\'M5 20v-2c0-3 3-5 7-5s7 2 7 5v2H5z\' fill=\'white\'/></svg>'">
+                    <div class="info">
+                        <div class="label">Автор проєкту</div>
+                        <div class="value">DEZER</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="close-modal" id="close-support">Закрити</button>
+        </div>
+    </div>
+
+    <div id="copy-notification" class="copy-notification">Скопійовано!</div>
+
+    <script>
+        (function() {
+            const titleElement = document.getElementById('hub-title');
+            const letters = Array.from(titleElement.children);
+            const correctText = ['C','o','n','T','o','u','r'];
+            const buttonArea = document.getElementById('button-area');
+            const animationArea = document.getElementById('animation-area');
+            const hubContainer = document.getElementById('hub-container');
+            const iframeContainer = document.getElementById('iframe-container');
+            const siteFrame = document.getElementById('site-frame');
+            const toolsButton = document.getElementById('tools-button');
+            
+            // Елементи для підтримки
+            const supportButton = document.getElementById('support-button');
+            const supportModal = document.getElementById('support-modal');
+            const closeSupport = document.getElementById('close-support');
+            const supportItems = document.querySelectorAll('.support-item[data-copy]');
+            const copyNotification = document.getElementById('copy-notification');
+
+            let chaosInterval;
+            const chaosDuration = 500;
+            const stepInterval = 500;
+
+            function randomLetter() {
+                const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+                return alphabet[Math.floor(Math.random() * alphabet.length)];
+            }
+
+            letters.forEach(span => {
+                span.textContent = randomLetter();
+            });
+
+            function startChaos() {
+                chaosInterval = setInterval(() => {
+                    letters.forEach(span => {
+                        span.textContent = randomLetter();
+                    });
+                }, 50);
+            }
+
+            function startSequentialFix() {
+                clearInterval(chaosInterval);
+
+                const indices = Array.from({ length: letters.length }, (_, i) => i);
+                for (let i = indices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [indices[i], indices[j]] = [indices[j], indices[i]];
+                }
+
+                const chaosIntervals = letters.map(span => {
+                    return setInterval(() => {
+                        span.textContent = randomLetter();
+                    }, 10);
+                });
+
+                let fixedCount = 0;
+
+                const fixTimer = setInterval(() => {
+                    if (fixedCount >= letters.length) {
+                        clearInterval(fixTimer);
+                        setTimeout(() => {
+                            animationArea.style.transition = 'opacity 0.5s ease';
+                            animationArea.style.opacity = '0';
+                            setTimeout(() => {
+                                animationArea.style.display = 'none';
+                                buttonArea.style.display = 'flex';
+                            }, 500);
+                        }, 500);
+                        return;
+                    }
+
+                    const idx = indices[fixedCount];
+                    letters[idx].textContent = correctText[idx];
+                    clearInterval(chaosIntervals[idx]);
+                    fixedCount++;
+                }, stepInterval);
+            }
+
+            window.addEventListener('load', () => {
+                startChaos();
+                setTimeout(startSequentialFix, chaosDuration);
+            });
+
+            function loadSite(sitePath) {
+                hubContainer.style.display = 'none';
+                iframeContainer.style.display = 'block';
+                siteFrame.src = sitePath;
+                // Ховаємо кнопку підтримки, коли відкрито інструмент
+                supportButton.style.display = 'none';
+            }
+
+            document.getElementById('btn-site1').addEventListener('click', () => {
+                loadSite('site1/index.html');
+            });
+
+            document.getElementById('btn-site2').addEventListener('click', () => {
+                loadSite('site2/index.html');
+            });
+
+            document.getElementById('btn-site3').addEventListener('click', () => {
+                loadSite('site3/index.html');
+            });
+
+            toolsButton.addEventListener('click', () => {
+                iframeContainer.style.display = 'none';
+                hubContainer.style.display = 'flex';
+                siteFrame.src = '';
+                animationArea.style.display = 'none';
+                buttonArea.style.display = 'flex';
+                // Показуємо кнопку підтримки при поверненні
+                supportButton.style.display = 'flex';
+            });
+
+            // Відкриття модального вікна підтримки
+            supportButton.addEventListener('click', () => {
+                supportModal.style.display = 'flex';
+            });
+
+            // Закриття модального вікна
+            closeSupport.addEventListener('click', () => {
+                supportModal.style.display = 'none';
+            });
+
+            // Закриття по кліку поза вікном
+            supportModal.addEventListener('click', (e) => {
+                if (e.target === supportModal) {
+                    supportModal.style.display = 'none';
+                }
+            });
+
+            // Функція копіювання
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    copyNotification.classList.add('show');
+                    setTimeout(() => {
+                        copyNotification.classList.remove('show');
+                    }, 1500);
+                }).catch(err => {
+                    alert('Не вдалося скопіювати. Спробуйте вручну.');
+                });
+            }
+
+            // Обробка кліку на елементи підтримки з data-copy
+            supportItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const textToCopy = item.getAttribute('data-copy');
+                    if (textToCopy) {
+                        copyToClipboard(textToCopy);
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
